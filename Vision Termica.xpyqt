@@ -1,0 +1,35 @@
+<!DOCTYPE XUPProject>
+<!--
+###########################################################################################
+##		Created using Monkey Studio v1.8.4.0b2 (1.8.4.0b2)
+##
+##	Author    : Rosa Quelal <rquelal@espol.edu.ec>
+##	Project   : Vision Termica
+##	FileName  : Vision Termica.xpythonqt
+##	Date      : 2016-11-01T14:45:52
+##	License   : GPL
+##	Comment   : Creating using Monkey Studio RAD
+##	Home Page   : http://www.VisionTermica.org
+##
+##	This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+##	WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+##
+###########################################################################################
+-->
+<project version="1.1.0" name="Vision Termica" >
+    <scope nested="false" name="XUPProjectSettings" >
+        <variable operator="=" name="EDITOR" multiline="false" >
+            <value content="PyQt" />
+        </variable>
+        <variable name="MAIN_FILE" multiline="true" >
+            <value content="main.py" />
+        </variable>
+    </scope>
+    <variable operator="=" name="FORMS" multiline="true" >
+        <file content="mainwindow.ui" />
+    </variable>
+    <variable operator="=" name="PYTHON_FILES" multiline="true" >
+        <file content="main.py" />
+        <file content="mainwindow.py" />
+    </variable>
+</project>
