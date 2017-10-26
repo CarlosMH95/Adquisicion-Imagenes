@@ -11,6 +11,7 @@ import os
 import shutil
 import threading
 import time
+
 class Perfil():
     def __init__(self):
         self.id=''
@@ -73,15 +74,16 @@ def main():
         root.after(3000, select_image)
         print("Hola Mundo")
 
-    def save_image(perfil):
+    def save_image():
         global panelA, panelB
         try:
             global img1, img2
+            global perfil
             manejador = Camaras.ManejaImagen()
             print(img1)
             print(img2)
-            cv2.imwrite("panelA-img-.bmp", img1)
-            cv2.imwrite("panelB-img-.jpg", img2)
+            cv2.imwrite(perfil.id +"-T"+perfil.toma+"-C1.bmp", img1)
+            cv2.imwrite(perfil.id +"-T"+perfil.toma+"-C2.bmp", img2)
 
             # r=manejador.guardar_imagen(img1, img2, 'prueba-i', 'prueba-x')
             # print (r)
@@ -101,13 +103,46 @@ def main():
     btn = Button(root, text="Preview", command=select_image)
     btn.pack(side="bottom", fill="both", expand="yes", padx="10", pady="10")
 
-    btn2 = Button(root, text="Guardar", command=save_image)
+    btn2 = Button(root, text="Guardar", command=save_image())
     btn2.pack(side="bottom", fill="both", expand="yes", padx="10", pady="10")
+    btn3 = Button(root, text="Reset", command= lambda : reset_perfil(root))
+    btn3.pack(side="bottom", fill="both", expand="yes", padx="10", pady="10")
     root.after(3000, select_image)
     # th = threading.Thread(target=select_image())
     # th.daemon = True  # terminates whenever main thread does
     # th.start()
     # kick off the GUI
     root.mainloop()
-def set_perfil():
-    pass
+
+def set_perfil(id, toma, tk):
+    global perfil
+    perfil.id=id
+    perfil.toma=toma
+    print("holi")
+    tk.destroy()
+    main()
+
+
+def nuevo_perfil():
+    perfil = Tk()
+    Label(perfil, text="Identificador").grid(row=0)
+    Label(perfil, text="Numero de Toma").grid(row=1)
+
+    input_id = Entry(perfil)
+    toma = Entry(perfil)
+
+    input_id.grid(row=0, column=1)
+    toma.grid(row=1, column=1)
+    btn = Button(perfil, text="Establecer Perfil", command=lambda: set_perfil(input_id.get(), toma.get(), perfil))
+    btn.grid(row=2, column=2)
+
+    perfil.mainloop()
+
+def reset_perfil(root):
+    global perfil
+    perfil.reset()
+    root.destroy()
+    nuevo_perfil()
+
+perfil = Perfil()
+nuevo_perfil()
