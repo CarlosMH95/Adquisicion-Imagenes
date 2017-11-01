@@ -14,21 +14,30 @@ import time
 
 class Perfil():
     def __init__(self):
-        self.id=''
-        self.contador=0
-        self.toma=0
+        self.id = ''
+        self.contador = 0
+        self.toma = 0
+        self.edad = ''
+        self.genero = ''
+        self.nombre = ''
+        self.apellido = ''
     def sum(self):
         self.contador+=1
     def reset(self):
         self.id = ''
         self.contador = 0
         self.toma = 0
+        self.edad =''
+        self.genero = ''
+        self.nombre = ''
+        self.apellido = ''
 
 
 
 def main():
+
     def select_image():
-        # grab a reference to the image panels
+
         global panelA, panelB
         # obtener las dos Imagenes
         prueba = Camaras.Camaras()
@@ -37,56 +46,52 @@ def main():
         if (a and b):
             global img1, img2
             img1, img2 = prueba.capturar_imagen()
-            # convert the images to PIL format...
+
             image = Image.fromarray(img1)
             image2 = Image.fromarray(img2)
             maxsize = (640, 640)
             image = image.resize(maxsize)
             image2 = image2.resize(maxsize)
 
-            # ...and then to ImageTk format
             image = ImageTk.PhotoImage(image)
             image2 = ImageTk.PhotoImage(image2)
         else:
             mbox.showerror("Error", "No Se puede acceder a las camaras")
             return 0
-        # if the panels are None, initialize them
+
         if panelA is None or panelB is None:
-            # the first panel will store our original image
+
             panelA = Label(image=image)
             panelA.image = image
             panelA.pack(side="left", padx=10, pady=10)
 
-            # while the second panel will store the edge map
+
             panelB = Label(image=image2)
             panelB.image = image2
             panelB.pack(side="right", padx=10, pady=10)
 
-        # otherwise, update the image panels
+
         else:
             # update the pannels
             panelA.configure(image=image)
             panelB.configure(image=image2)
             panelA.image = image
             panelB.image = image2
-        # panelA.after(8000, select_image())
-        # panelB.after(8000, select_image())
+
         root.after(3000, select_image)
-        print("Hola Mundo")
 
     def save_image():
         global panelA, panelB
         try:
             global img1, img2
             global perfil
-            manejador = Camaras.ManejaImagen()
+           # manejador = Camaras.ManejaImagen()
             print(img1)
             print(img2)
             cv2.imwrite(perfil.id +"-T"+perfil.toma+"-C1.bmp", img1)
             cv2.imwrite(perfil.id +"-T"+perfil.toma+"-C2.bmp", img2)
+            perfil.sum()
 
-            # r=manejador.guardar_imagen(img1, img2, 'prueba-i', 'prueba-x')
-            # print (r)
             mbox.showinfo("Guardado", "Las Imagenes fueron guardadas con exito")
         except:
             mbox.showerror("Error", "No se pudo guardar las Imagenes")
@@ -95,11 +100,6 @@ def main():
     root = Tk()
     panelA = None
     panelB = None
-
-
-    # create a button, then when pressed, will trigger a file chooser
-    # dialog and allow the user to select an input image; then add the
-    # button the GUI
     btn = Button(root, text="Preview", command=select_image)
     btn.pack(side="bottom", fill="both", expand="yes", padx="10", pady="10")
 
@@ -114,10 +114,15 @@ def main():
     # kick off the GUI
     root.mainloop()
 
-def set_perfil(id, toma, tk):
+def set_perfil(id, toma, gen, ed, nom, ape, tk):
     global perfil
     perfil.id=id
     perfil.toma=toma
+    perfil.genero=gen
+    perfil.edad=ed
+    perfil.nombre=nom
+    perfil.apellido=ape
+
     print("holi")
     tk.destroy()
     main()
@@ -127,15 +132,35 @@ def nuevo_perfil():
     perfil = Tk()
     Label(perfil, text="Identificador").grid(row=0)
     Label(perfil, text="Numero de Toma").grid(row=1)
+    Label(perfil, text="Genero").grid(row=2)
+    Label(perfil, text='Edad').grid(row=3)
+    Label(perfil, text='Nombre').grid(row=4)
+    Label(perfil, text='Apellido').grid(row=5)
 
     input_id = Entry(perfil)
     toma = Entry(perfil)
+    genero = Entry(perfil)
+    edad = Entry(perfil)
+    nombre = Entry(perfil)
+    apellido = Entry(perfil)
+
 
     input_id.grid(row=0, column=1)
     toma.grid(row=1, column=1)
-    btn = Button(perfil, text="Establecer Perfil", command=lambda: set_perfil(input_id.get(), toma.get(), perfil))
-    btn.grid(row=2, column=2)
+    genero.grid(row=2, column=1)
+    edad.grid(row=3, column=1)
+    nombre.grid(row=4, column=1)
+    apellido.grid(row=5, column=1)
 
+    btn = Button(perfil, text="Establecer Perfil", command=lambda: set_perfil(input_id.get(), toma.get(), genero.get(), edad.get(), nombre.get(), apellido.get(), perfil))
+    btn.grid(row=6, column=1)
+    w=400
+    h=130
+    ws=perfil.winfo_screenwidth()
+    hs=perfil.winfo_screenheight()
+    x=(ws/2) - (w/2)
+    y=(hs/2) - (h/2)
+    perfil.geometry('%dx%d+%d+%d' % (w,h,x,y))
     perfil.mainloop()
 
 def reset_perfil(root):
