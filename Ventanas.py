@@ -89,7 +89,7 @@ def main():
            # manejador = Camaras.ManejaImagen()
             print(img1)
             print(img2)
-            cv2.imwrite(perfil.id +"-T"+perfil.toma+"-C1.bmp", img1)
+            cv2.imwrite(perfil.id +"-T"+perfil.toma+"-"+perfil.genero+"-C1.bmp", img1)
             cv2.imwrite(perfil.id +"-T"+perfil.toma+"-C2.bmp", img2)
             perfil.sum()
 

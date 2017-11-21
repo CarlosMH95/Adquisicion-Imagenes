@@ -1,5 +1,5 @@
 import cv2
-import numpy
+import numpy as np
 import pypylon.pylon as pylon
 class Camaras():
 
@@ -41,14 +41,38 @@ class Camaras():
     def capturar_imagen(self):
 
         if(self.icam and self.xcam):
+            # create a pylon ImageFormatConverter object
+            formatConverter = pylon.ImageFormatConverter()
+            # specify the output pixel format
+            formatConverter.OutputPixelFormat.SetValue(pylon.PixelType_BGR8packed)
             self.icam.Open()
-            img = self.icam.GrabOne(4000)
+            self.icam.AcquisitionFrameRateEnable.SetValue(True)
+            self.icam.AcquisitionFrameRateAbs.SetValue(3.0)
+            grabResult = self.icam.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
+            pylonImage = formatConverter.Convert(grabResult)
+            rows = grabResult.GetHeight()
+            cols = grabResult.GetWidth()
+            cvImage = np.frombuffer(pylonImage.GetBuffer(), np.uint8).reshape(rows, cols, 3)
+            img = cvImage
             self.icam.Close()
+
+            ################################################################################
+
+
             self.xcam.Open()
-            img2 = self.xcam.GrabOne(4000)
+            self.xcam.AcquisitionFrameRateEnable.SetValue(True)
+            self.xcam.AcquisitionFrameRateAbs.SetValue(3.0)
+            grabResult2 = self.xcam.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
+            pylonImage2 = formatConverter.Convert(grabResult2)
+            rows = grabResult.GetHeight()
+            cols = grabResult.GetWidth()
+            cvImage2 = np.frombuffer(pylonImage2.GetBuffer(), np.uint8).reshape(rows, cols, 3)
+            img2 = cvImage2
+
+            # img2 = self.xcam.GrabOne(4000)
             self.xcam.Close()
-            img = img.Array
-            img2 = img2.Array
+            # img = img.Array
+            # img2 = img2.Array
             return img, img2
         else:
             return False
