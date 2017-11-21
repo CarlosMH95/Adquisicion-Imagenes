@@ -20,16 +20,28 @@ icam = py.InstantCamera(ptl.CreateDevice(detected_devices[0]))
 xcam = py.InstantCamera(ptl.CreateDevice(detected_devices[1]))
 
 icam.Open()
+
 img = icam.GrabOne(4000)
+
+print(img)
 icam.Close()
 xcam.Open()
+xcam.PixelFormat = "BGR8"
+#xcam.properties['PixelFormat'] = 'BG12'
 img2 = xcam.GrabOne(4000)
+
+print (img2)
 xcam.Close()
+# data  = np.array(img2.GetBuffer()).astype(np.uint8)
+# image = data.reshape(img2.GetHeight(), img2.GetWidth())
+# cv2.imshow('image', image)
+# cv2.waitKey(0)
+# print(image)
 img = img.Array
 img2 = img2.Array
-print(img)
+#print(img)
 
-print(img2)
+#print(img2)
 print(img.shape)
 print(img2.shape)
 cv2.imshow('img', img)

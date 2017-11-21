@@ -1,16 +1,17 @@
+# import itertools
+# import os
+# import shutil
+# import threading
+# import time
+
 import cv2
 from tkinter import *
-from PIL import Image as Im
 from PIL import Image
 from PIL import ImageTk
 from tkinter import filedialog as tkFileDialog
 from Camaras import Camaras
 from tkinter import messagebox as mbox
-import itertools
-import os
-import shutil
-import threading
-import time
+
 
 class Perfil():
     def __init__(self):
@@ -21,21 +22,21 @@ class Perfil():
         self.genero = ''
         self.nombre = ''
         self.apellido = ''
+
     def sum(self):
         self.contador+=1
+
     def reset(self):
         self.id = ''
         self.contador = 0
         self.toma = 0
-        self.edad =''
+        self.edad = ''
         self.genero = ''
         self.nombre = ''
         self.apellido = ''
-
-
-
+panelA = None
+panelB = None
 def main():
-
     def select_image():
 
         global panelA, panelB
@@ -95,8 +96,9 @@ def main():
             mbox.showinfo("Guardado", "Las Imagenes fueron guardadas con exito")
         except:
             mbox.showerror("Error", "No se pudo guardar las Imagenes")
-    img1=0
-    img2=0
+
+    img1 = 0
+    img2 = 0
     root = Tk()
     panelA = None
     panelB = None
@@ -116,14 +118,12 @@ def main():
 
 def set_perfil(id, toma, gen, ed, nom, ape, tk):
     global perfil
-    perfil.id=id
-    perfil.toma=toma
-    perfil.genero=gen
-    perfil.edad=ed
-    perfil.nombre=nom
-    perfil.apellido=ape
-
-    print("holi")
+    perfil.id = id
+    perfil.toma = toma
+    perfil.genero = gen
+    perfil.edad = ed
+    perfil.nombre = nom
+    perfil.apellido = ape
     tk.destroy()
     main()
 
@@ -143,9 +143,7 @@ def nuevo_perfil():
     edad = Entry(perfil)
     nombre = Entry(perfil)
     apellido = Entry(perfil)
-
-
-    input_id.grid(row=0, column=1)
+    input_id.grid(row = 0, column = 1)
     toma.grid(row=1, column=1)
     genero.grid(row=2, column=1)
     edad.grid(row=3, column=1)
@@ -154,17 +152,20 @@ def nuevo_perfil():
 
     btn = Button(perfil, text="Establecer Perfil", command=lambda: set_perfil(input_id.get(), toma.get(), genero.get(), edad.get(), nombre.get(), apellido.get(), perfil))
     btn.grid(row=6, column=1)
-    w=400
-    h=130
-    ws=perfil.winfo_screenwidth()
-    hs=perfil.winfo_screenheight()
-    x=(ws/2) - (w/2)
-    y=(hs/2) - (h/2)
-    perfil.geometry('%dx%d+%d+%d' % (w,h,x,y))
+    w = 400
+    h = 130
+    ws = perfil.winfo_screenwidth()
+    hs = perfil.winfo_screenheight()
+    x = (ws/2) - (w/2)
+    y = (hs/2) - (h/2)
+    perfil.geometry('%dx%d+%d+%d' % (w, h, x, y))
     perfil.mainloop()
 
 def reset_perfil(root):
     global perfil
+    global panelA, panelB
+    panelA=None
+    panelB=None
     perfil.reset()
     root.destroy()
     nuevo_perfil()
